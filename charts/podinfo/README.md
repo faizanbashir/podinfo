@@ -37,6 +37,7 @@ Parameter | Default | Description
 `backend` | `None` | Echo backend URL
 `backends` | `[]` | Array of echo backend URLs
 `cache` | `None` | Redis address in the format `<host>:<port>`
+`redis.enabled` | `false` | Create Redis deployment for caching purposes
 `ui.color` | `#34577c` |  UI color
 `ui.message` | `None` |  UI greetings message
 `ui.logo` | `None` |  UI logo
@@ -80,12 +81,20 @@ Parameter | Default | Description
 `nodeSelector` | `{}` | Node labels for pod assignment
 `tolerations` | `[]` | List of node taints to tolerate
 `affinity` | `None` | Node/pod affinities
+`podAnnotations` | `{}` | Pod annotations
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
 $ helm install my-release podinfo/podinfo \
   --set=serviceMonitor.enabled=true,serviceMonitor.interval=5s
+```
+
+To add custom annotations you need to escape the annotation key string:
+
+```console
+$ helm upgrade -i my-release podinfo/podinfo \
+--set podAnnotations."appmesh\.k8s\.aws\/preview"=enabled
 ```
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
